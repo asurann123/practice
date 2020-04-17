@@ -1,35 +1,33 @@
 <?php
 if ('POST' == $_SERVER['REQUEST_METHOD']) {
-	if (validation_form()) {
-		process_form();
-	}else{
-		show_form();
+	$sweets = $_POST['sweet'];
+	print 'あなたの選択した麺は、' . $_POST['noodle'] . 'です<br>';
+	foreach ($sweets as $sweet) {
+		print '選択されたスイーツは、' . $sweet . 'が、' . $_POST['sweet_q'] . '個です。<br>';
 	}
 }else{
-	show_form();
-}
-
-function process_form() {
-	print "Hello,  " . $_POST['my_name'];
-}
-
-function show_form() {
 	$link = $_SERVER['PHP_SELF'];
-	print <<<_HTML_
+	print<<<_HTML_
 <form method="post" action="$link">
-Your name: <input type="text" name="my_name">
+Braised Noodles with: <select name="noodle">
+<option>crab meat</option>
+<option>mushroom</option>
+<option>barbecued pork</option>
+<option>shredded ginger and green onion</option>
+</select>
 <br>
-<input type="submit" value="Say Hello">
+Sweet:<select name="sweet[]" multiple>
+<option value="puff"> Sesame Seed Puff
+<option value="square">Coconut Milk Gelatin square
+<option value="cake">Brown Sugar Cake
+<option value="ricemeat">Sweet Rice and meat
+</select>
+<br>
+Sweet Quantity: <input type="text" name="sweet_q">
+<br>
+<input type="submit" name="submit" value="Order">
 </form>
 _HTML_;
-}
 
-function validation_form() {
-	if (strlen($_POST['my_name']) < 3) {
-		return false;
-	}else{
-		return true;
-	}
 }
-
 ?>
