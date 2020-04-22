@@ -39,15 +39,12 @@ class Data {
 
 $sources = Data::getSource();
 $menu = Data::getMenu();
-var_dump($menu);
-var_dump($sources);
-foreach ($sources as $source) {
-    print $source['taste'] . "<br>";
-}
 
-foreach ($menu as $item) {
-    print " ・" . $item['item'] . $item['price'] . "円<br>";
-}
+/* foreach ($sources as $source) {
+    print $source['taste'] . "<br>";
+} */
+
+
 $html = <<<_HTML_
 Braised Noodles with: <select name="noodle">
 <option>crab meat</option>
@@ -63,6 +60,7 @@ Sweet:<select name="sweet[]" multiple>
 <option value="ricemeat">Sweet Rice and meat
 </select>
 <br>
+<?php
 Sweet Quantity: <input type="text" name="sweet_q">
 <br>
 _HTML_;
