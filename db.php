@@ -41,18 +41,6 @@ class Data {
 $sources = Data::getSource();
 $menu = Data::getMenu();
 
-//メニューの表示
-
-foreach ($menu as $item) {
-    print " ・" . $item['item'] . "　" . $item['price'] . "円<br>";
-    if ($item['item'] == 'からあげ') {
-        print 'からあげ定食にはソースを追加できます<br>(+100円)<br>' . '<select name="menu[]" multiple>';
-        foreach ($sources as $source) {
-            print '<option value="source">' . $source['taste'];
-            }
-            print '</select><br>';
-        }
-}
 //フォーム作成（レシート画面）
 if ('POST' == $_SERVER['REQUEST_METHOD']) {
     //処理部
@@ -74,13 +62,31 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
     }
     $menu_sum = array_sum($menu_array);
     $option_sum = array_sum($option_array);
+    $total = $option_sum + $menu_sum;
     //表示部
-   var_dump($option_sum + $menu_sum);
+    print "お会計" . $total . "円です<br>内訳<br>";
+    foreach ($_POST as $key => $value) {
+        if ($value >= 1) {
+            print "・" . $key  . "　" . $value . "つ<br>";
+        }
+    }
 
 
 
 }else{
     $link = $_SERVER['PHP_SELF'];
+    //メニューの表示
+
+    foreach ($menu as $item) {
+        print " ・" . $item['item'] . "　" . $item['price'] . "円<br>";
+        if ($item['item'] == 'からあげ') {
+            print 'からあげ定食にはソースを追加できます<br>(+100円)<br>' . '<select name="menu[]" multiple>';
+            foreach ($sources as $source) {
+                print '<option value="source">' . $source['taste'];
+            }
+            print '</select><br>';
+        }
+    }
     print '<form method="post" action="' . $link . '"><h2>注文画面</h2>';
     foreach ($menu as $value) {
         print "・" . $value['item'] . '<input type="number" name="' . $value['item'] . '" value="0" min="0" max="10" step="1"><br>';
