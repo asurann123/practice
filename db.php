@@ -40,25 +40,22 @@ class Data {
 
 $sources = Data::getSource();
 $menu = Data::getMenu();
-var_dump($menu);
-var_dump($sources);
-foreach ($sources as $source) {
-    print $source['taste'] . "<br>";
-}
 
+print "定食メニュー<br>";
 foreach ($menu as $item) {
-    print " ・" . $item['item'] . $item['price'] . "円<br>";
+    print " ・" . $item['item'] . "　" . $item['price'] . "円<br>";
+    if ($item['item'] == 'からあげ') {
+        print '<select name="menu[]" multiple>';
+        foreach ($sources as $source) {
+            print '<option value="source">' . $source['taste'];
+        }
+        print '</select><br>';
+    }
 }
-$html = <<<_HTML_
-Braised Noodles with: <select name="noodle">
-<option>crab meat</option>
-<option>mushroom</option>
-<option>barbecued pork</option>
-<option>shredded ginger and green onion</option>
-</select>
-<br>
-Sweet:<select name="sweet[]" multiple>
-<option value="puff"> Sesame Seed Puff
+/* $html = <<<_HTML_
+Menu<br>
+<select name="menu[]" multiple>
+<option value="puff">
 <option value="square">Coconut Milk Gelatin square
 <option value="cake">Brown Sugar Cake
 <option value="ricemeat">Sweet Rice and meat
@@ -70,6 +67,7 @@ _HTML_;
 
 print $html;
 
+ */
 /* if ('POST' == $_SERVER['REQUEST_METHOD']) {
     $sweets = $_POST['sweet'];
     print 'あなたの選択した麺は、' . $_POST['noodle'] . 'です<br>';
