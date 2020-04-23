@@ -80,7 +80,7 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
     foreach ($menu as $item) {
         print " ・" . $item['item'] . "　" . $item['price'] . "円<br>";
         if ($item['item'] == 'からあげ') {
-            print 'からあげ定食にはソースを追加できます<br>(+100円)<br>' . '<select name="menu[]" multiple>';
+            print 'からあげ定食用ソース(+100円)<br>' . '<select name="menu[]" multiple>';
             foreach ($sources as $source) {
                 print '<option value="source">' . $source['taste'];
             }
