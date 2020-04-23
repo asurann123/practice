@@ -1,25 +1,5 @@
 <?php
-<<<<<<< HEAD
-try {
-	$db = new PDO('mysql:host=localhost;dbname=restaurant','penguin','top^hat');
-	$db->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
-	//Eggplant with Chili Sauceは辛い
-	//影響を受ける行数に関心がなければ
-	//exec()の返り値を保持する必要はない
-	$db->exec("UPDATE dishes SET is_spicy = 1
-                      WHERE dish_name = 'Eggplant with Chili Sauce'");
-	//Lobster with Chili Sauce は辛くて高い
-	$db->exec("UPDATE dishes SET is_spicy = 1,price=price * 2
-                       WHERE dish_name = 'Lobster with Chili Sauce' ");
-} catch (PDOException $e) {
-	print "Could not connect" . $e->getMessage();
-}
-=======
-<<<<<<< HEAD
->>>>>>> develop
 
-?>
-=======
 class Data {
     static function getMenu() {
         try {
@@ -61,63 +41,62 @@ class Data {
 $sources = Data::getSource();
 $menu = Data::getMenu();
 
-/* foreach ($sources as $source) {
-    print $source['taste'] . "<br>";
-} */
-
-
-$html = <<<_HTML_
-Braised Noodles with: <select name="noodle">
-<option>crab meat</option>
-<option>mushroom</option>
-<option>barbecued pork</option>
-<option>shredded ginger and green onion</option>
-</select>
-<br>
-Sweet:<select name="sweet[]" multiple>
-<option value="puff"> Sesame Seed Puff
-<option value="square">Coconut Milk Gelatin square
-<option value="cake">Brown Sugar Cake
-<option value="ricemeat">Sweet Rice and meat
-</select>
-<br>
-<?php
-Sweet Quantity: <input type="text" name="sweet_q">
-<br>
-_HTML_;
-
-print $html;
-
-/* if ('POST' == $_SERVER['REQUEST_METHOD']) {
-    $sweets = $_POST['sweet'];
-    print 'あなたの選択した麺は、' . $_POST['noodle'] . 'です<br>';
-    foreach ($sweets as $sweet) {
-        print '選択されたスイーツは、' . $sweet . 'が、' . $_POST['sweet_q'] . '個です。<br>';
+//フォーム作成（レシート画面）
+if ('POST' == $_SERVER['REQUEST_METHOD']) {
+    //処理部
+    $menu_array = array();
+    $option_array = array();
+    foreach ($_POST as $key => $value) {
+        foreach ($menu as $item) {
+            if ($key == $item['item']) {
+                $res1 = $value * $item['price'];
+                array_push($menu_array,$res1);
+            }
+        }
+         foreach ($sources as $source) {
+             if ($key == $source['taste']) {
+                 $res2 = $value * $source['price'];
+                 array_push($option_array,$res2);
+             }
+         }
     }
+    $menu_sum = array_sum($menu_array);
+    $option_sum = array_sum($option_array);
+    $total = $option_sum + $menu_sum;
+    //表示部
+    print "お会計" . $total . "円です<br>内訳<br>";
+    foreach ($_POST as $key => $value) {
+        if ($value >= 1) {
+            print "・" . $key  . "　" . $value . "つ<br>";
+        }
+    }
+
+
+
 }else{
     $link = $_SERVER['PHP_SELF'];
-    print<<<_HTML_
-<form method="post" action="$link">
-Braised Noodles with: <select name="noodle">
-<option>crab meat</option>
-<option>mushroom</option>
-<option>barbecued pork</option>
-<option>shredded ginger and green onion</option>
-</select>
-<br>
-Sweet:<select name="sweet[]" multiple>
-<option value="puff"> Sesame Seed Puff
-<option value="square">Coconut Milk Gelatin square
-<option value="cake">Brown Sugar Cake
-<option value="ricemeat">Sweet Rice and meat
-</select>
-<br>
-Sweet Quantity: <input type="text" name="sweet_q">
-<br>
-<input type="submit" name="submit" value="Order">
-</form>
-_HTML_;
+    //メニューの表示
 
+    foreach ($menu as $item) {
+        print " ・" . $item['item'] . "　" . $item['price'] . "円<br>";
+        if ($item['item'] == 'からあげ') {
+            print 'からあげ定食用ソース(+100円)<br>' . '<select name="menu[]" multiple>';
+            foreach ($sources as $source) {
+                print '<option value="source">' . $source['taste'];
+            }
+            print '</select><br>';
+        }
+    }
+    print '<form method="post" action="' . $link . '"><h2>注文画面</h2>';
+    foreach ($menu as $value) {
+        print "・" . $value['item'] . '<input type="number" name="' . $value['item'] . '" value="0" min="0" max="10" step="1"><br>';
+        if ($value['item'] == 'からあげ') {
+            foreach ($sources as $source) {
+                print "&emsp;・" . $source['taste'] . '<input type="number" name="' . $source['taste'] . '" value="0" min="0" max="10" step="1"><br>';
+            }
+        }
+    }
+    print '<input type="submit" name="submit" value="注文"></form>';
 }
-?> */
->>>>>>> add_error_message
+
+?>
