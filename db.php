@@ -1,4 +1,25 @@
 <?php
+<<<<<<< HEAD
+try {
+	$db = new PDO('mysql:host=localhost;dbname=restaurant','penguin','top^hat');
+	$db->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
+	//Eggplant with Chili Sauceは辛い
+	//影響を受ける行数に関心がなければ
+	//exec()の返り値を保持する必要はない
+	$db->exec("UPDATE dishes SET is_spicy = 1
+                      WHERE dish_name = 'Eggplant with Chili Sauce'");
+	//Lobster with Chili Sauce は辛くて高い
+	$db->exec("UPDATE dishes SET is_spicy = 1,price=price * 2
+                       WHERE dish_name = 'Lobster with Chili Sauce' ");
+} catch (PDOException $e) {
+	print "Could not connect" . $e->getMessage();
+}
+=======
+<<<<<<< HEAD
+>>>>>>> develop
+
+?>
+=======
 class Data {
     static function getMenu() {
         try {
@@ -39,15 +60,12 @@ class Data {
 
 $sources = Data::getSource();
 $menu = Data::getMenu();
-var_dump($menu);
-var_dump($sources);
-foreach ($sources as $source) {
-    print $source['taste'] . "<br>";
-}
 
-foreach ($menu as $item) {
-    print " ・" . $item['item'] . $item['price'] . "円<br>";
-}
+/* foreach ($sources as $source) {
+    print $source['taste'] . "<br>";
+} */
+
+
 $html = <<<_HTML_
 Braised Noodles with: <select name="noodle">
 <option>crab meat</option>
@@ -63,6 +81,7 @@ Sweet:<select name="sweet[]" multiple>
 <option value="ricemeat">Sweet Rice and meat
 </select>
 <br>
+<?php
 Sweet Quantity: <input type="text" name="sweet_q">
 <br>
 _HTML_;
@@ -101,3 +120,4 @@ _HTML_;
 
 }
 ?> */
+>>>>>>> add_error_message
