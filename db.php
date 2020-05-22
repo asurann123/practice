@@ -4,7 +4,7 @@ class Data {
 	private $menu;
 	private $source;
 
-	//表示部
+	//見せてあげるところ
 	public function displayMenueData(){
 		$this->getMenuByDb();
 		return $this->menu;
@@ -95,14 +95,14 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
         print " ・" . $item['item'] . "　" . $item['price'] . "円<br>";
         if ($item['item'] == 'からあげ') {
             print 'からあげ定食用ソース(+100円)<br>' . '<select name="menu[]" multiple>';
-            foreach ($menu_source->displaySourceData()as $source) {
+            foreach ($menu_source->displaySourceData() as $source) {
                 print '<option value="source">' . $source['taste'];
             }
             print '</select><br>';
         }
     }
     print '<form method="post" action="' . $link . '"><h2>注文画面</h2>';
-    foreach ($menu_source->displayMenueData()as $value) {
+    foreach ($menu_source->displayMenueData() as $value) {
         print "・" . $value['item'] . '<input type="number" name="' . $value['item'] . '" value="0" min="0" max="10" step="1"><br>';
         if ($value['item'] == 'からあげ') {
         	foreach ($menu_source->displaySourceData() as $source) {
