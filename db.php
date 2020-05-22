@@ -1,9 +1,24 @@
 <?php
 
 class Data {
-    static function getMenu() {
+	private $menu;
+	private $source;
+
+	//表示部
+	public function displayMenueData(){
+		$this->getMenuByDb();
+		return $this->menu;
+	}
+
+	public function displaySourceData(){
+		$this->getSourceByDb();
+		return $this->source;
+	}
+
+	//dbから引っ張る処理
+    private function getMenuByDb() {
         try {
-            $db = new PDO('mysql:host=localhost;dbname=learn','hogehoge','hogehoge');
+        	$db = new PDO('mysql:host=localhost;dbname=learn','hogehoge','hogehoge');
             $sql = "SELECT
                            item,
                            price
@@ -12,14 +27,14 @@ class Data {
 
             $stmt = $db->prepare($sql);
             $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $this->menu = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         } catch (PDOException $e) {
             print 'Could not connect:' . $e->getMessage();
         }
     }
 
-    static function getSource() {
+    private function getSourceByDb() {
         try {
             $db = new PDO('mysql:host=localhost;dbname=learn','hogehoge','hogehoge');
             $sql = "SELECT
@@ -30,7 +45,7 @@ class Data {
 
             $stmt = $db->prepare($sql);
             $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $this->source = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         } catch (PDOException $e) {
             print 'Could not connect:' . $e->getMessage();
@@ -38,8 +53,7 @@ class Data {
     }
 }
 
-$sources = Data::getSource();
-$menu = Data::getMenu();
+$menu_source = new Data();
 
 //フォーム作成（レシート画面）
 if ('POST' == $_SERVER['REQUEST_METHOD']) {
@@ -47,13 +61,13 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
     $menu_array = array();
     $option_array = array();
     foreach ($_POST as $key => $value) {
-        foreach ($menu as $item) {
+    	foreach ($menu_source->displayMenueData()as $item) {
             if ($key == $item['item']) {
                 $res1 = $value * $item['price'];
                 array_push($menu_array,$res1);
             }
         }
-         foreach ($sources as $source) {
+        foreach ($menu_source->displaySourceData()as $source) {
              if ($key == $source['taste']) {
                  $res2 = $value * $source['price'];
                  array_push($option_array,$res2);
@@ -77,21 +91,21 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
     $link = $_SERVER['PHP_SELF'];
     //メニューの表示
 
-    foreach ($menu as $item) {
+    foreach ($menu_source->displayMenueData() as $item) {
         print " ・" . $item['item'] . "　" . $item['price'] . "円<br>";
         if ($item['item'] == 'からあげ') {
             print 'からあげ定食用ソース(+100円)<br>' . '<select name="menu[]" multiple>';
-            foreach ($sources as $source) {
+            foreach ($menu_source->displaySourceData()as $source) {
                 print '<option value="source">' . $source['taste'];
             }
             print '</select><br>';
         }
     }
     print '<form method="post" action="' . $link . '"><h2>注文画面</h2>';
-    foreach ($menu as $value) {
+    foreach ($menu_source->displayMenueData()as $value) {
         print "・" . $value['item'] . '<input type="number" name="' . $value['item'] . '" value="0" min="0" max="10" step="1"><br>';
         if ($value['item'] == 'からあげ') {
-            foreach ($sources as $source) {
+        	foreach ($menu_source->displaySourceData() as $source) {
                 print "&emsp;・" . $source['taste'] . '<input type="number" name="' . $source['taste'] . '" value="0" min="0" max="10" step="1"><br>';
             }
         }
