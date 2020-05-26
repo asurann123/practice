@@ -1,15 +1,15 @@
 <?php
 
 class Data {
-	private $item;
-	private $price;
-	private $taste;
+	protected $item;
+	protected $price;
+	protected $taste;
 
-	public function getMenueData(){
+	protected function getMenueData(){
 		return $this->getMenuByDb();
 	}
 
-	public function getSourceData(){
+	protected function getSourceData(){
 		return $this->getSourceByDb();
 	}
 
