@@ -1,17 +1,12 @@
 <?php
 
-class Menu {
+abstract class Menu {
 	protected $price;
 	protected $name;
-	protected $total_price;
 
 	function __construct($price,$name) {
 		$this->price = $price;
 		$this->name = $name;
-	}
-
-	public function sumItem($param) {
-		$this->total_price= $this->price * $param;
 	}
 
 	public function getName() {
@@ -20,10 +15,6 @@ class Menu {
 
 	public function getPrice() {
 		return $this->price;
-	}
-
-	public function getTotalPrice(){
-		return $this->total_price;
 	}
 
 	//存在しないプロパティに値をセットしようとする
@@ -48,28 +39,34 @@ class ChickenNanban extends Menu{
 
 class FriedChicknSet  extends  Menu{
 	protected $source;
-	protected $source_price;
 
 	public function setSource($id) {
 		if ($id == 1) {
-			$this->source = 'タルタルソース';
+			$this->source = new Source('タルタルソース');
 		}elseif ($id == 2){
-			$this->source = 'チリソース';
+			$this->source = new Source('チリソース');
 		}elseif ($id == 3){
-			$this->source = 'ブラックペッパーソース';
+			$this->source = new Source('ブラックペッパーソース');
 		}
-		$this->source_price = 100;
 	}
 
-	public function sumFee($param) {
-		parent::sumItem($param);
-		$set_fee = $this->source_price * $param + $this->price * $param;
-		$this->total_price = $set_fee;
+	public function getSource($param) {
+		if ($param == 'name') {
+			return $this->source->name;
+		}elseif($param == 'price'){
+			return $this->source->price;
+		}
 	}
 
-	public function getSource() {
-		return $this->source;
+}
+
+class Source extends Menu{
+
+	function __construct($name) {
+		$this->price = 100;
+		$this->name = $name;
 	}
+
 }
 
 

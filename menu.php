@@ -11,6 +11,17 @@ function displayMenu($name,$price) {
 }
 
 //レシートの合計金額を計算する関数
+function itemTotal($item,$number,$source = null){
+	if (is_null($source)) {
+		$item_total = $item * $number;
+	}else{
+		$item_mluti = $item * $number;
+		$item_total = $item_mluti + $number * 100;
+	}
+
+	return $item_total;
+}
+
 function totalSum(...$numbers) {
 	$sum_number = 0;
 	foreach ($numbers as $number) {
@@ -28,21 +39,22 @@ $fried_chicken_set = new FriedChicknSet(1000,'からあげ定食');
 if ('POST' == $_SERVER['REQUEST_METHOD']) {
 	//からあげ定食のセット
 	$fried_chicken_set->setSource($_POST['source']);
-	//合計を表示する
-	$curry->sumItem($_POST['カレー']);
-	$chicken_nanban_set->sumItem($_POST['チキン南蛮']);
-	$fried_chicken_set->sumFee($_POST['からあげ定食']);
 
-	$total_sum = totalSum($curry->getTotalPrice(),
-			$chicken_nanban_set->getTotalPrice(),
-			$fried_chicken_set->getTotalPrice());
+	//それぞれの合計
+	$curry_total = itemTotal($curry->getPrice(),$_POST['カレー']);
+	$chicken_nanban_total = itemTotal($chicken_nanban_set->getPrice(),$_POST['チキン南蛮']);
+	$fried_chicken_total = itemTotal($fried_chicken_set->getPrice(),$_POST['からあげ定食'],$_POST['source']);
 
-	print "合計" . $total_sum . "円<br>内訳<br>";
+	//全部の合計
+	$total_fee = totalSum($curry_total,$chicken_nanban_total,$fried_chicken_total);
+	print "合計:" . $total_fee . "円<br>";
+
 	//内訳を表示する
+	print '内訳<br>';
 	foreach ($_POST as $key => $value) {
 		if ($value > 0) {
 			if ($key == 'source') {
-				print "→" . $fried_chicken_set->getSource();
+				print "→" . $fried_chicken_set->getSource('name');
 			}else{
 				print $key . "　" . $value . "個<br>";
 			}
@@ -50,10 +62,9 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
 	}
 
 }else{
-
 	$link = $_SERVER['PHP_SELF'];
-	//メニューの表示
 
+	//メニューの表示
 	print '<form method="post" action="' . $link . '"><h2>注文画面</h2>';
 	print displayMenu($curry->getName(),$curry->getPrice());
 	print displayMenu($chicken_nanban_set->getName(),$chicken_nanban_set->getPrice());
@@ -64,7 +75,6 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
 				<option value="2">チリソース</option>
 				<option value="3">ブラックペッパーソース</option>';
 		print '</select><br>';
-
 	print '<input type="submit" name="submit" value="注文"></form>';
 }
 ?>
