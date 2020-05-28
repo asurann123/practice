@@ -37,7 +37,8 @@ $fried_chicken_set = new FriedChicknSet(1000,'からあげ定食');
 
 //フォーム作成（レシート画面）
 if ('POST' == $_SERVER['REQUEST_METHOD']) {
-	//からあげ定食のセット
+
+	//からあげ定食のソースを設定
 	$fried_chicken_set->setSource($_POST['source']);
 
 	//それぞれの合計

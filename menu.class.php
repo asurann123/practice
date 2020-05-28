@@ -51,7 +51,6 @@ class FriedChicknSet  extends  Menu{
 			return $this->source->price;
 		}
 	}
-
 }
 
 class Source extends Menu{
