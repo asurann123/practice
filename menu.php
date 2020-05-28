@@ -6,22 +6,22 @@ require_once ('menu.class.php');
 
 //メニューの表示に使う関数
 function displayMenu($name,$price) {
-	$sent_message ="・" . $name .'　' . $price . '円　' .'<input type="number" name="' . $name .'" value="0" min="0" max="10" step="1"><br>';;
+	$sent_message ="・" . $name .'　' . $price . '円　' .'<input type="number" name="' . $name .'" value="0" min="0" max="9" step="1"><br>';;
 	return $sent_message;
 }
 
-//レシートの合計金額を計算する関数
+//メニューごとの合計
 function itemTotal($item,$number,$source = null){
 	if (is_null($source)) {
 		$item_total = $item * $number;
 	}else{
 		$item_mluti = $item * $number;
-		$item_total = $item_mluti + $number * 100;
+		$item_total = $item_mluti + $source * 100;
 	}
-
 	return $item_total;
 }
 
+//合計金額を表示
 function totalSum(...$numbers) {
 	$sum_number = 0;
 	foreach ($numbers as $number) {
@@ -56,7 +56,7 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
 			if ($key == 'source') {
 				print "→" . $fried_chicken_set->getSource('name');
 			}else{
-				print $key . "　" . $value . "個<br>";
+				print $key . "　" . $value . "つ<br>";
 			}
 		}
 	}
@@ -69,6 +69,7 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
 	print displayMenu($curry->getName(),$curry->getPrice());
 	print displayMenu($chicken_nanban_set->getName(),$chicken_nanban_set->getPrice());
 	print displayMenu($fried_chicken_set->getName(),$fried_chicken_set->getPrice());
+		//からあげ定食用のソースを選択できるようにする
 		print 'からあげ定食用ソース<select name="source" size="1">';
 		print '<option value="0">なし</option>
 				<option value="1">タルタルソース</option>

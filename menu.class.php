@@ -41,13 +41,7 @@ class FriedChicknSet  extends  Menu{
 	protected $source;
 
 	public function setSource($id) {
-		if ($id == 1) {
-			$this->source = new Source('タルタルソース');
-		}elseif ($id == 2){
-			$this->source = new Source('チリソース');
-		}elseif ($id == 3){
-			$this->source = new Source('ブラックペッパーソース');
-		}
+		$this->source = new Source($id);
 	}
 
 	public function getSource($param) {
@@ -62,9 +56,15 @@ class FriedChicknSet  extends  Menu{
 
 class Source extends Menu{
 
-	function __construct($name) {
+	function __construct($id) {
 		$this->price = 100;
-		$this->name = $name;
+		if ($id == 1) {
+			$this->name= 'タルタルソース';
+		}elseif ($id == 2){
+			$this->name= 'チリソース';
+		}elseif ($id == 3){
+			$this->name= 'ブラックペッパーソース';
+		}
 	}
 
 }
