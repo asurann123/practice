@@ -11,13 +11,8 @@ function displayMenu($name,$price) {
 }
 
 //メニューごとの合計
-function itemTotal($item,$number,$source = null){
-	if (is_null($source)) {
-		$item_total = $item * $number;
-	}else{
-		$item_mluti = $item * $number;
-		$item_total = $item_mluti + $source * 100;
-	}
+function itemTotal($item,$number){
+	$item_total = $item * $number;
 	return $item_total;
 }
 
@@ -35,16 +30,21 @@ $curry = new Curry(850,'カレー');
 $chicken_nanban_set = new ChickenNanban(1200,'チキン南蛮');
 $fried_chicken_set = new FriedChicknSet(1000,'からあげ定食');
 
-//フォーム作成（レシート画面）
+//レシート画面
 if ('POST' == $_SERVER['REQUEST_METHOD']) {
 
 	//からあげ定食のソースを設定
 	$fried_chicken_set->setSource($_POST['source']);
 
-	//それぞれの合計
+	//メニューごとの合計
 	$curry_total = itemTotal($curry->getPrice(),$_POST['カレー']);
 	$chicken_nanban_total = itemTotal($chicken_nanban_set->getPrice(),$_POST['チキン南蛮']);
-	$fried_chicken_total = itemTotal($fried_chicken_set->getPrice(),$_POST['からあげ定食'],$_POST['source']);
+	//ソースを付けた時の合計
+	$fried_chicken_total = itemTotal($fried_chicken_set->getPrice(),$_POST['からあげ定食']);
+	if ($_POST['source'] > 0) {
+		$source_total = $_POST['からあげ定食'] * $fried_chicken_set->getSource('price');
+		$fried_chicken_total += $source_total;
+	}
 
 	//全部の合計
 	$total_fee = totalSum($curry_total,$chicken_nanban_total,$fried_chicken_total);
@@ -53,15 +53,14 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
 	//内訳を表示する
 	print '内訳<br>';
 	foreach ($_POST as $key => $value) {
-		if ($value > 0) {
-			if ($key == 'source') {
-				print "→" . $fried_chicken_set->getSource('name');
-			}else{
-				print $key . "　" . $value . "つ<br>";
-			}
+		if ($key == 'source') {
+			print $fried_chicken_set->getSource('name');
+		}elseif ($value > 0) {
+			print $key . "　" . $value . "つ<br>";
 		}
 	}
 
+//メニュー画面
 }else{
 	$link = $_SERVER['PHP_SELF'];
 
