@@ -4,12 +4,6 @@
 //menuクラスを読み込み
 require_once ('menu.class.php');
 
-//メニューの表示に使う関数
-function displayMenu($name,$price) {
-	$sent_message ="・" . $name .'　' . $price . '円　' .'<input type="number" name="' . $name .'" value="0" min="0" max="9" step="1"><br>';;
-	return $sent_message;
-}
-
 //メニューごとの合計
 function itemTotal($item,$number){
 	$item_total = $item * $number;
@@ -66,9 +60,9 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
 
 	//メニューの表示
 	print '<form method="post" action="' . $link . '"><h2>注文画面</h2>';
-	print displayMenu($curry->getName(),$curry->getPrice());
-	print displayMenu($chicken_nanban_set->getName(),$chicken_nanban_set->getPrice());
-	print displayMenu($fried_chicken_set->getName(),$fried_chicken_set->getPrice());
+	$curry->displayMenu();
+	$chicken_nanban_set->displayMenu();
+	$fried_chicken_set->displayMenu();
 		//からあげ定食用のソースを選択できるようにする
 		print 'からあげ定食用ソース<select name="source" size="1">';
 		print '<option value="0">なし</option>

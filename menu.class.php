@@ -16,6 +16,20 @@ abstract class Menu {
 	public function getPrice() {
 		return $this->price;
 	}
+	
+	public function getNameAndPrice() {
+		$message = $this->getName().'　' . $this->getPrice(). '円　' ;
+		return $message;
+	}
+	
+	public function makeInputTag() {
+		$tag = '<input type="number" name="' . $this->name .'" value="0" min="0" max="9" step="1"><br>';
+		return $tag;
+	}
+	
+	public function displayMenu() {
+		echo $this->getNameAndPrice() . $this->makeInputTag();
+	}
 
 	//存在しないプロパティに値をセットしようとする
 	public function __set($prop,$val) {
@@ -67,8 +81,6 @@ class Source extends Menu{
 	}
 
 }
-
-
 
 
 ?>
