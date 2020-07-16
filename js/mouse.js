@@ -1,23 +1,28 @@
 $(function(){
-  console.log('読み込み完了');
-
-  $(".msg").each(function() {
-    $(this).data("info",["こんにちは","こんばんは","さようなら"]);
-    $(this).data("count",-1);
-  });
-
-  $(".msg").click(function(event) {
-    var n = $(this).data("count");
-    var arr = $(this).data("info");
-    n = (n + 1) % (arr.length);
-    $(this).text(arr[n]);
-    $(this).data("count",n);
-  });
-
-  $(".msg").hover(function() {
-    $(this).addClass('hovermsg');
-  },function(event){
-    $(this).removeClass("hovermsg");
-  }
-);
+  $("#msg1").data("flg",false);
+  $("#msg0").click(
+    function(event){
+      var f = $("#msg").data("flg");
+      f = !f;
+      if (f){
+        $("#msg1").bind("click",doclick);
+        $("#msg1").hover(m_in,m_out);
+      } else {
+        $("#msg1").unbind('click');
+        $("#msg1").unbind('hover');
+      }
+      $("#msg1").data('flg',f);
+    });
 });
+
+function doclick(event){
+  alert("クリックしました。");
+}
+
+function m_in(event){
+  $(this).addClass('hovermsg');
+}
+
+function m_out(event){
+  $(this).removeClass('hovermsg');
+}
