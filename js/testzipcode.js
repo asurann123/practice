@@ -9,7 +9,7 @@ $(window).ready( function() {
       address : {
         '#prefecture'  : '%3',
         '#town' : '%5',
-        '#all' : '%4',
+        '#all' : '%9',
       }
 
     });
@@ -23,5 +23,5 @@ $(window).ready( function() {
         $('#all').val('');
       }
     });
-  });
-  
+
+});
