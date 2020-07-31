@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html>
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="initial-scale=1.0">
     <title>Document</title>
-    <script type="text/javascript" src="//code.jquery.com/jquery-2.1.0.min.js"></script>
-    <script type="text/javascript" src="//jpostal-1006.appspot.com/jquery.jpostal.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.0.min.js"></script>
+    <script type="text/javascript" src="https://jpostal-1006.appspot.com/jquery.jpostal.js"></script>
+    <script type="text/javascript" src="js/testzipcode.js"></script>
+  </head>
   <body>
     <form>
       <p>※郵便番号(ハイフンなし)</p>
@@ -27,34 +29,5 @@
     <input type="text" id="all" name="all"><br>
     <input type="text" id="test" name="test"><br>
 
-    <script>
-
-      $(function () {
-
-        //自動で郵便番号を入力する
-      	$('#zip').jpostal({
-      		postcode : [
-      			'#zip'
-      		],
-      		address : {
-            '#prefecture'  : '%3',
-      			'#town' : '%5',
-            '#all' : '%4',
-      		}
-
-      	});
-
-        //郵便番号の入力が空になった場合の処理
-      	$('#zip').on('keyup', function(event){
-      		if ($(this).val() == '') {
-      			$('#prefecture').val('');
-      			$('#city').val('');
-            $('#town').val('');
-            $('#all').val('');
-      		}
-      	});
-      });
-
-    </script>
   </body>
 </html>
