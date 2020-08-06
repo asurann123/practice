@@ -5,26 +5,20 @@
     <meta name="viewport" content="initial-scale=1.0">
     <title>Document</title>
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.0.min.js"></script>
-    <script type="text/javascript" src="https://jpostal-1006.appspot.com/jquery.jpostal.js"></script>
+    <script src="https://yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
 
   </head>
   <body>
-    <form>
-      <p>※郵便番号(ハイフンなし)</p>
-      <input type="text" id="zip" name="zip"> <br>
-      <p>※都道府県</p>
-      <input type="text" id="prefecture" name="prefecture"><br>
-      <p>市</p>
-      <input type="text" id="city" name="city">
-      <p>区</p>
-      <input type="text" id="ward" name="ward">
-      <p>※町村名</p>
-      <input type="text" id="town" name="town">
-      <p>番地</p>
-      <input type="text" id="address" name="address">
-      <p>テスト(自動入力部分を全部表示)</p>
-      <input type="text" id="all" name="all"><br><br>
-      <input type="reset"  value="クリア"><br>
+    <form class="h-adr">
+      <span class="p-country-name" style="display:none;">Japan</span>
+
+      〒<input type="text" class="p-postal-code" size="7" maxlength="7"><br>
+      <input type="button" id="ok-btn" name="OK" value="OKボタン"><br>
+
+      <input type="text" class="p-region" readonly /><br>
+      <input type="text" class="p-locality"　/><br>
+      <input type="text" class="p-street-address" /><br>
+      <input type="text" class="p-extended-address" />
     </form>
     <script type="text/javascript" src="js/testzipcode.js"></script>
   </body>
