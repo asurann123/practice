@@ -6,7 +6,10 @@ $(window).ready( function() {
     var cityname = $(".p-locality").val();
     var townname = $(".p-street-address").val();
 
-    //市か郡か(-1なら市ではない)
+    //スプリットする
+    var splitname = cityname.split("市")
+
+    //市か郡か23区か(-1なら市ではない)
     var cityflag = cityname.indexOf("市")
     var exceptionnames = ['余市郡余市町','芳賀郡市貝町','芳賀郡市貝町','西八代郡市川三郷町','神崎郡市川町','吉野郡下市町']
     if (cityflag !== -1) {
@@ -19,8 +22,8 @@ $(window).ready( function() {
       if (flg === 1) {
         $('.town').val(cityname + townname)
       }else{
-        //スプリットする
-        var splitname = cityname.split("市")
+
+
         //東京都23区への対策
         if (splitname[0].match("区")) {
           $('.ward').val(splitname[0])
@@ -37,6 +40,9 @@ $(window).ready( function() {
         }
         $('.town').val(townname)
       }
+    }else if (splitname[0].match("区")) {
+      $('.ward').val(splitname[0])
+      $('.town').val(townname)
     }else{
       $('.town').val(cityname + townname)
     }
