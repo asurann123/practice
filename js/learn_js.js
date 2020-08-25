@@ -47,19 +47,9 @@ function callback(request){
     var title_ele = xml_obj.getElementsByTagName("entry")[i].getElementsByTagName("title").item(0);
     var summary = xml_obj.getElementsByTagName("entry")[i].getElementsByTagName("summary").item(0);
     var url = xml_obj.getElementsByTagName("entry")[i].getElementsByTagName("id").item(0);
-    html +='
-    <div class="card">
-      <img class="bd-placeholder-img card-img-top" src="" alt="">
-      <div class="card-body">
-        <h5 class="card-title"></h5>
-        <p class="card-text"></p>
-        <a href="#" class="btn btn-primary">詳しく</a>
-      </div>
-    </div>
-    '
-    //'<li class="list-group-item"><b><a href= "' + url.textContent + '" target="_blank">' + title_ele.textContent + '</a></b><br>' + summary.textContent + '</li><br>'
+    html +='<div class="card"><img class="bd-placeholder-img card-img-top" src="" alt=""><div class="card-body"><h5 class="card-title"><b>' + title_ele.textContent + '</b></h5><p class="card-text">' + summary.textContent + '</p><a href="' + url.textContent + '" class="btn btn-primary" target=”_blank”>詳しく</a></div></div><hr>'
   }
-
+  console.log(xml_obj);
   obj.innerHTML = html;
 }
 
