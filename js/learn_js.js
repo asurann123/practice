@@ -25,7 +25,7 @@ window.onload = function doAction(){
     return;
   }
   //alert("非同期通信を開始します");
-  request.open("GET","https://www.nikkansports.com/baseball/professional/atom.xml",true);
+  request.open("GET","test.xml",true);
   //request.setRequestHeader("User-Agent" , "XMLHttpRequest");
   request.onreadystatechange = function(){
     if (request.readyState == 4 && request.status == 200) {
