@@ -15,46 +15,13 @@
       background-color: #FF6666;
     }
   </style>
-  <script src="https://www.google.com/jsapi"></script>
-  <script type="text/javascript">
-  <!--
-  google.load("jquery","1");
-    google.setOnLoadCallback(function(){
-      $('#msg1').data("flg",false);
-      $("#msg0").click(function(event) {
-        var f = $("#msg1").data('flg');
-        f = !f;
-        if (f){
-          $("#msg1").bind("click",doclick);
-          $("#msg").hover(m_in,m_out);
-        } else {
-          $("#msg1").unbind("click");
-          $("#msg1").unbind("hover");
-        }
-        $("#msg1").data("flg",f);
-      }
-    );
-  });
-
-  function doclick(event){
-    alert("クリックしました");
-  }
-
-  function m_in(event){
-    $(this).addClass('hovermsg');
-  }
-  function m_out(event){
-    $(this).removeClass('hovermsg');
-  }
-
-  -->
-  </script>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 </head>
 <body>
-  <script type="text/javascript" src="js/sample.js"></script>
   <h1 id="title">サンプル</h1>
-  <div id="msg0" class="msg">メッセージ</div>
-  <div id="msg1" class="msg">メッセージ</div>
-  <div id="msg2" class="msg">メッセージ</div>
+  <div id="msg0" class="msg">スタート</div>
+  <div id="msg1" class="msg">スタート</div>
+  <div id="msg1" class="msg">スタート</div>
+  <script src="js/mouse.js"></script>
 </body>
 </html>
