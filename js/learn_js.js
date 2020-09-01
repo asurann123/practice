@@ -25,17 +25,17 @@ window.onload = function doAction(){
     return;
   }
   //alert("非同期通信を開始します");
-  request.open("GET","test.xml",true);
+  request.open("GET","php/get_baseball_news.php",true);
   //request.setRequestHeader("User-Agent" , "XMLHttpRequest");
   request.onreadystatechange = function(){
     if (request.readyState == 4 && request.status == 200) {
       callback(request);
     }else{
-      //errorPrint()
+      //errorPrint(request)
     }
 
   }
-  request.send();
+  request.send(null);
 }
 
 //コールバック関数
@@ -48,25 +48,14 @@ function callback(request){
     var title_ele = xml_obj.getElementsByTagName("entry")[i].getElementsByTagName("title").item(0);
     var summary = xml_obj.getElementsByTagName("entry")[i].getElementsByTagName("summary").item(0);
     var url = xml_obj.getElementsByTagName("entry")[i].getElementsByTagName("id").item(0);
-    html +='<div class="card"><img class="bd-placeholder-img card-img-top" src="" alt=""><div class="card-body"><h5 class="card-title"><b>' + title_ele.textContent + '</b></h5><p class="card-text">' + summary.textContent + '</p><a href="' + url.textContent + '" class="btn btn-primary" target=”_blank”>詳しく</a></div></div><hr>'
+    html +='<div class="card"><img class="bd-placeholder-img card-img-top" src="" alt=""><div class="card-body"><h5 class="card-title"><b>' + title_ele.textContent + '</b></h5><p class="card-text">' + summary.textContent + '</p><a href="' + url.textContent + '" class="btn btn-outline-info" target=”_blank”>詳しく</a></div></div><hr>'
   }
   obj.innerHTML = html;
 }
 
 //エラー等の出力
-function errorPrint(){
+function errorPrint(request){
   var obj = document.getElementById("msg");
   var html = '<div class="spinner-border text-primary" role="status"><span class="sr-only" id="msg">Loading...</span></div>'
   obj.innerHTML = html;
-}
-
-//最下部までスクロールした際の挙動
-$(window).on('scroll', function () {
-  var doch = $(document).innerHeight();
-  var winh = $(window).innerHeight();
-  var obj = document.getElementById("msg");
-  var bottom = doch - winh;
-  if (bottom <= $(window).scrollTop()) {
-  //一番下までスクロールした時に実行
-  }
-});
+};
