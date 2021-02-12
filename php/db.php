@@ -1,15 +1,52 @@
 <?php
 
+define("DBNAME",'test');
+
+class SingletonPDO extends PDO{
+
+    protected static $dbh;
+    protected static $dsn='mysql:host=mysql;dbname=' . DBNAME . ';charset=utf8;';
+    protected $db_user = "test";
+    protected $db_pass = "test";
+
+    //DBへの接続
+    public function __construct(){
+
+        parent::__construct(self::$dsn,$this->db_user,$this->db_pass);
+    }
+
+    public static function connect(){
+
+        try{
+            if(!self::$dbh){
+                self::$dbh=new self();
+                self::$dbh->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
+            }
+            return self::$dbh;
+
+        }catch(PDOException $e){
+
+            if(!isInService()){
+                echo $e->getFile () . ':' . $e->getLine () . ' ' . $e->getMessage () . ' ' . $e->getTraceAsString ();
+                echo "<br><br>";
+            }
+            echo "データベースエラーです。";
+            error_log ( $e->getFile () . ':' . $e->getLine () . ' ' . $e->getMessage () . ' ' . $e->getTraceAsString () );
+
+        }
+    }
+}
+
 class Data {
 	protected $item;
 	protected $price;
 	protected $taste;
 
-	public function getMenueData(){
+	public function getMenue(){
 		return $this->getMenuByDb();
 	}
 
-	public function getSourceData(){
+	public function getSource(){
 		return $this->getSourceByDb();
 	}
 
@@ -25,47 +62,43 @@ class Data {
 
 	//dbから引っ張る処理
     private function getMenuByDb() {
-        try {
-        	$db = new PDO('mysql:host=mysql;dbname=test;charset=utf8;', 'test', 'test');
-            $sql = "SELECT
-                           item,
-                           price
-                        FROM
-                           menu";
 
-            $stmt = $db->prepare($sql);
-            $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_CLASS,"Data");
+	    $dbh = SingletonPDO::connect();
 
-        } catch (PDOException $e) {
-            print 'Could not connect:mdwaenu' . $e->getMessage();
-        }
+        $sql = "SELECT
+                    item,
+                    price
+                FROM
+                    menu
+                ";
+
+        $stmt = $dbh->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_CLASS,"Data");
+
     }
 
     private function getSourceByDb() {
-        try {
-            $db = new PDO('mysql:host=mysql;dbname=test;charset=utf8;', 'test', 'test');
-            $sql = "SELECT
-                           taste,
-                           price
-                        FROM
-                           source";
 
-            $stmt = $db->prepare($sql);
-            $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_CLASS,"Data");
+        $dbh = SingletonPDO::connect();
+        $sql = "SELECT
+                    taste,
+                    price
+                FROM
+                    source
+                ";
 
-        } catch (PDOException $e) {
-            print 'Could not connect:' . $e->getMessage();
-        }
+        $stmt = $dbh->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_CLASS,"Data");
     }
 }
 
 $data = new Data();
 //メニューの取得
-$menus = $data->getMenueData();
+$menus = $data->getMenue();
 //ソースを取得
-$sources = $data->getSourceData();
+$sources = $data->getSource();
 
 
 //フォーム作成（レシート画面）
