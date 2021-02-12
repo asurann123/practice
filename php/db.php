@@ -1,19 +1,18 @@
 <?php
 
 define("DBNAME",'test');
-define("DB_USER","test");
-define("DB_PASS","test");
+
 class SingletonPDO extends PDO{
 
-//スコープ演算子 static で宣言しておいて後で：：でアクセスできる
     protected static $dbh;
-
     protected static $dsn='mysql:host=mysql;dbname=' . DBNAME . ';charset=utf8;';
+    protected $db_user = "test";
+    protected $db_pass = "test";
 
     //DBへの接続
     public function __construct(){
 
-        parent::__construct(self::$dsn,DB_USER,DB_PASS);
+        parent::__construct(self::$dsn,$this->db_user,$this->db_pass);
     }
 
     public static function connect(){
@@ -31,24 +30,23 @@ class SingletonPDO extends PDO{
                 echo $e->getFile () . ':' . $e->getLine () . ' ' . $e->getMessage () . ' ' . $e->getTraceAsString ();
                 echo "<br><br>";
             }
-            echo "データベースエラーが発生しています。";
+            echo "データベースエラーです。";
             error_log ( $e->getFile () . ':' . $e->getLine () . ' ' . $e->getMessage () . ' ' . $e->getTraceAsString () );
 
         }
     }
 }
 
-
 class Data {
 	protected $item;
 	protected $price;
 	protected $taste;
 
-	public function getMenueData(){
+	public function getMenue(){
 		return $this->getMenuByDb();
 	}
 
-	public function getSourceData(){
+	public function getSource(){
 		return $this->getSourceByDb();
 	}
 
@@ -98,9 +96,9 @@ class Data {
 
 $data = new Data();
 //メニューの取得
-$menus = $data->getMenueData();
+$menus = $data->getMenue();
 //ソースを取得
-$sources = $data->getSourceData();
+$sources = $data->getSource();
 
 
 //フォーム作成（レシート画面）
