@@ -1,2 +1,6 @@
 *.project
-test.php
+.idea/modules.xml
+.idea/practice.iml
+.idea/vcs.xml
+.idea/workspace.xml
+.idea/codeStyles/codeStyleConfig.xml

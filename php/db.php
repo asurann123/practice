@@ -5,11 +5,11 @@ class Data {
 	protected $price;
 	protected $taste;
 
-	protected function getMenueData(){
+	public function getMenueData(){
 		return $this->getMenuByDb();
 	}
 
-	protected function getSourceData(){
+	public function getSourceData(){
 		return $this->getSourceByDb();
 	}
 
@@ -26,7 +26,7 @@ class Data {
 	//dbから引っ張る処理
     private function getMenuByDb() {
         try {
-        	$db = new PDO('mysql:host=localhost;dbname=learn','hogehoge','hogehoge');
+        	$db = new PDO('mysql:host=mysql;dbname=test;charset=utf8;', 'test', 'test');
             $sql = "SELECT
                            item,
                            price
@@ -38,13 +38,13 @@ class Data {
             return $stmt->fetchAll(PDO::FETCH_CLASS,"Data");
 
         } catch (PDOException $e) {
-            print 'Could not connect:' . $e->getMessage();
+            print 'Could not connect:mdwaenu' . $e->getMessage();
         }
     }
 
     private function getSourceByDb() {
         try {
-            $db = new PDO('mysql:host=localhost;dbname=learn','hogehoge','hogehoge');
+            $db = new PDO('mysql:host=mysql;dbname=test;charset=utf8;', 'test', 'test');
             $sql = "SELECT
                            taste,
                            price
@@ -98,12 +98,9 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
         }
     }
 
-
-
 }else{
     $link = $_SERVER['PHP_SELF'];
     //メニューの表示
-
     foreach ($menus as $item) {
     	print " ・" . $item->displayMethod('item'). "　" . $item->displayMethod('price'). "円<br>";
     	if ($item->displayMethod('item')== 'からあげ') {
