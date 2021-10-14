@@ -1,5 +1,4 @@
 *.project
-test.php
 .idea/modules.xml
 .idea/practice.iml
 .idea/vcs.xml
